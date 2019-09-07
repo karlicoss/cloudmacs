@@ -5,20 +5,20 @@ FROM silex/emacs:master-alpine AS emacs
 # TODO FIXME not sure if xclip is necessary
 # TODO I guess it should be a separate script so it's not bundled?
 
-# TODO https://gist.github.com/Herz3h/0ffc2198cb63949a20ef61c1d2086cc0
-# TODO FIXME add other locales..
+
+### configure locales for proper unicode display
+# Borrowed from https://gist.github.com/Herz3h/0ffc2198cb63949a20ef61c1d2086cc0
+# TODO add other locales..
 ENV MUSL_LOCPATH=/usr/local/share/i18n/locales/musl
-RUN apk add --update git cmake make musl-dev gcc gettext-dev libintl
-RUN cd /tmp && git clone https://github.com/rilian-la-te/musl-locales.git
-RUN cd /tmp/musl-locales && cmake . && make && make install
 
-
-# TODO remove this step
-RUN locale -a
-# TODO locale-gen??
-
-
-ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+RUN apk --no-cache add git cmake make musl-dev gcc gettext-dev libintl \
+ && git clone https://github.com/rilian-la-te/musl-locales.git /tmp/musl-locales \
+ && cd /tmp/musl-locales \
+ && cmake . && make && make install \
+ && rm -rf /tmp/musl-locales \
+ && apk del git cmake make musl-dev gcc gettext-dev libintl
+ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+### 
 
 
 ### configure asEnvUser, tool to run emacs in docker with user's permissions rather than root
@@ -40,19 +40,6 @@ RUN apk --no-cache add git build-base \
 
 ### 
 
-
-
-### TODO comment why is that necessary
-# TODO eh, what does uid here mean? try changing it to 1001?..
-ENV UNAME="emacser" \
-    GNAME="emacs" \
-    UHOME="/home/emacs" \
-    UID="1000" \
-    GID="1000" \
-    WORKSPACE="/mnt/workspace" \
-    SHELL="/bin/bash"
-
-
 ### configure gotty
 # TODO extract in a separate image?
 # based on https://github.com/dit4c/dockerfile-gotty
@@ -68,7 +55,19 @@ RUN apk add --no-cache go git build-base && \
 
 
 
-EXPOSE 8080 # gotty default
+### TODO comment why is that necessary
+# TODO eh, what does uid here mean? try changing it to 1001?..
+ENV UNAME="emacser" \
+    GNAME="emacs" \
+    UHOME="/home/emacs" \
+    UID="1000" \
+    GID="1000" \
+    WORKSPACE="/mnt/workspace" \
+    SHELL="/bin/bash"
+
+
+# gotty default
+EXPOSE 8080
 
 WORKDIR "${WORKSPACE}"
 
