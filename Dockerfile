@@ -39,6 +39,21 @@ RUN chown root /usr/local/sbin/asEnvUser \
  && chmod 700  /usr/local/sbin/asEnvUser
 
 
+# TODO https://gist.github.com/Herz3h/0ffc2198cb63949a20ef61c1d2086cc0
+# TODO FIXME add other locales..
+ENV MUSL_LOCPATH=/usr/local/share/i18n/locales/musl
+RUN apk add --update git cmake make musl-dev gcc gettext-dev libintl
+RUN cd /tmp && git clone https://github.com/rilian-la-te/musl-locales.git
+RUN cd /tmp/musl-locales && cmake . && make && make install
+
+
+# TODO remove this step
+RUN locale -a
+# TODO locale-gen??
+
+
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
 
 ### TODO comment why is that necessary
 # TODO eh, what does uid here mean? try changing it to 1001?..
@@ -49,6 +64,7 @@ ENV UNAME="emacser" \
     GID="1000" \
     WORKSPACE="/mnt/workspace" \
     SHELL="/bin/bash"
+
 
 
 
