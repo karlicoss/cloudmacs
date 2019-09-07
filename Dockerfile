@@ -1,18 +1,5 @@
 FROM silex/emacs:master-alpine AS emacs
-
-### handle gotty
-# based on https://github.com/dit4c/dockerfile-gotty
-# Unfortunately, it's got fixed alpine version and missing dependency so easies was just to copy it
-RUN apk add --update go git build-base && \
-  mkdir -p /tmp/gotty && \
-  GOPATH=/tmp/gotty go get github.com/yudai/gotty && \
-  mv /tmp/gotty/bin/gotty /usr/local/bin/ && \
-  apk del go git build-base && \
-  rm -rf /tmp/gotty /var/cache/apk/*
-
-EXPOSE 8080
-### 
-
+# 218 Mb. hmm wonder if building without GUI would help?
 
 # TODO check if git is necessary for emacs init..
 # TODO FIXME not sure if xclip is necessary
@@ -64,6 +51,20 @@ ENV UNAME="emacser" \
     GID="1000" \
     WORKSPACE="/mnt/workspace" \
     SHELL="/bin/bash"
+
+
+### configure gotty
+# based on https://github.com/dit4c/dockerfile-gotty
+# Unfortunately, it's got fixed alpine version and missing dependency so easiest was just to copy it
+RUN apk add --no-cache go git build-base && \
+  mkdir -p /tmp/gotty && \
+  GOPATH=/tmp/gotty go get github.com/yudai/gotty && \
+  mv /tmp/gotty/bin/gotty /usr/local/bin/ && \
+  apk del go git build-base && \
+  rm -rf /tmp/gotty
+EXPOSE 8080
+# binary takes about 14 Mb
+### 
 
 
 
