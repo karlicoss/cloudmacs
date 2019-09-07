@@ -1,7 +1,7 @@
 FROM silex/emacs:master-alpine AS emacs
 
-
 # based on https://github.com/dit4c/dockerfile-gotty
+# Unfortunately, it's got fixed alpine version and missing dependency so easies was just to copy it
 RUN apk add --update go git build-base && \
   mkdir -p /tmp/gotty && \
   GOPATH=/tmp/gotty go get github.com/yudai/gotty && \
@@ -12,6 +12,7 @@ RUN apk add --update go git build-base && \
 EXPOSE 8080
 
 # TODO FIXME not sure if xclip is necessary
+# TODO I guess it should be a separate script so it's not bundled?
 RUN apk add --no-cache git xclip 
 
 
