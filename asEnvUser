@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+
 # borrowed from https://github.com/JAremko/docker-emacs
 
 ## Create(if needed) this user and run command as the user:
