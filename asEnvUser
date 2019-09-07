@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -eux
 
 # borrowed from https://github.com/JAremko/docker-emacs
 
@@ -18,38 +18,40 @@ set -x
 if ! id "${UNAME}" >/dev/null 2>&1; then
 	## Prepend the user to /etc/passwd to ensure that it will
 	## override already existing users with the same IDs
-	echo -e "${UNAME}:x:${UID}:${GID}:${UNAME},,,:${UHOME}:${SHELL}\n$(cat /etc/passwd)" > /etc/passwd
+	echo -e "${UNAME}:x:${EMACS_UID}:${EMACS_GID}:${UNAME},,,:${UHOME}:${SHELL}\\n$(cat /etc/passwd)" > /etc/passwd
 	echo "${UNAME}::17032:0:99999:7:::" >> /etc/shadow
 fi
 
-## Make sure that user is sudoer
-if [ ! -f "/etc/sudoers.d/${UNAME}" ]; then
+## Make sure that user is sudoer (if sudo is present)
+if [[ -d "/etc/sudoers.d" ]] && [[ ! -f "/etc/sudoers.d/${UNAME}" ]]; then
 	echo "${UNAME} ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/${UNAME}"
 	chmod 0440 "/etc/sudoers.d/${UNAME}"
 fi
 
 ## Create user's group if it doesn't exists
-u_group=$(egrep -i "^${GNAME}" /etc/group)
+set +e
+u_group=$(grep -E -i "^${GNAME}" /etc/group)
 if [ $? -ne 0 ]; then
-	echo "${GNAME}:x:${GID}:${UNAME}" >> /etc/group
+	echo "${GNAME}:x:${EMACS_GID}:${UNAME}" >> /etc/group
 elif [[ ${u_group} != *"${UNAME}"* ]]; then
 	sed -i -e "s/${u_group}/${u_group},${UNAME}/g" /etc/group
 fi
+set -e
 
 ## Make sure that the user owns home directory
 if [ -d "${UHOME}" ]
 then
 	home_owner="$(stat -c '%U' ${UHOME})"
 	if ! id "${home_owner}" >/dev/null 2>&1 || [ "$(id -u ${UNAME})" -ne "$(id -u ${home_owner})" ]; then
-		chown "${UID}":"${GID}" -R ${UHOME}
+		chown "${EMACS_UID}":"${EMACS_GID}" -R ${UHOME}
 	fi
 else
 	mkdir -p "${UHOME}"
-	chown "${UID}":"${GID}" "${UHOME}"
+	chown "${EMACS_UID}":"${EMACS_GID}" "${UHOME}"
 fi
 
 mkdir -p "${WORKSPACE}"
-chown "${UID}":"${GID}" "${WORKSPACE}"
+chown "${EMACS_UID}":"${EMACS_GID}" "${WORKSPACE}"
 cd "${WORKSPACE}"
 
 su-exec "${UNAME}" "$@"
