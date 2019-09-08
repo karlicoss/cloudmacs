@@ -1,0 +1,37 @@
+#!/bin/bash
+set -eux
+
+# path on Docker container
+EMACS_HOME="/home/emacs"
+
+# TODO not sure if it's possible to temporary suspend container?
+# basically I just want to be able to install custom pkgs..
+docker run -it -d --restart unless-stopped --name cloudmacs  \
+ -e UNAME="$(id -un)" \
+ -e GNAME="$(id -gn)" \
+ -e EMACS_UID="$(id -u)" \
+ -e EMACS_GID="$(id -g)" \
+ -e UHOME="$EMACS_HOME" \
+ -p 7001:8080 \
+ -v "/L/tmp/cloudmacs/.emacs.d:$EMACS_HOME/.emacs.d" \
+ -v "$HOME/.spacemacs.d:$EMACS_HOME/.spacemacs.d" \
+ -v "$HOME/configs:$EMACS_HOME/configs" \
+ -v /L/data/notes:/L/data/notes \
+ -v /L/data/zim:/L/data/zim \
+ -v /L/data/views:/L/data/views \
+ "karlicoss/cloudmacs:latest"
+
+
+# TODO workspace
+# TODO docker-compose file?
+
+# TODO check if git is necessary for emacs init..
+# TODO FIXME not sure if xclip is necessary
+# TODO I guess it should be a separate script so it's not bundled?
+
+
+
+# TODO hmm
+# docker exec 5cc0 sh -c "apk add --no-cache git xclip"
+
+# docker exec cloudmacs sh -c "apk add --no-cache git xclip"
