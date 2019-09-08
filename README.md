@@ -1,5 +1,7 @@
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/karlicoss/cloudmacs)
 
+For ages I've been seeking a decent browser frontend for my org-mode notes and todo lists. Until I realised that nothing prevents me from having emacs itself in my browser.
+
 # Using 
 1. `cp docker-compose.example.yml docker-compose.yml`
 2. Edit necessary variables in `docker-compose.yml`, presumably your want to
@@ -12,6 +14,9 @@
 * reverse proxy
 * `post-start`
 * write about asUserEnv?
+
+# Limitations
+* Phones? (use orgzly)
 
 # Credits
 * [dit4c/dockerfile-gotty](https://github.com/dit4c/dockerfile-gotty)
