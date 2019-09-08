@@ -1,4 +1,4 @@
-![Docker Build Status](https://img.shields.io/docker/build/karlicoss/cloudmacs) ![MicroBadger Size](https://img.shields.io/microbadger/image-size/karlicoss/cloudmacs)
+![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/karlicoss/cloudmacs)
 
 # Using 
 1. `cp docker-compose.example.yml docker-compose.yml`
