@@ -29,7 +29,10 @@ It works **really** well with spacemacs style `SPC`/`,` bindings because they fo
    * change port (see 'selfhost' secion)
 3. Run the container: `./run`.
 
-4. Check it out in browser: 'http://localhost:7001'.
+4. Check it out in browser: 'http://localhost:7001**.
+
+# Customize
+ TODO Dockerfile.customized
 
 # Selfhost
 * TODO cloning emacs.d first? not sure if should just reuse .emacs.d? I guess better not to to avoid potential problems coming from different builds?

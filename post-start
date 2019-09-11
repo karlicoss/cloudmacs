@@ -4,7 +4,7 @@ set -eux
 # example of my post start script
 # TODO I guess ideally this would be a separate docker build step?
 
-# apparently that can't be added to docker-compose file :( https://github.com/docker/compose/issues/1809 
+# apparently that can't be added to docker-compose file :( https://github.com/docker/compose/issues/1809
 
 docker exec cloudmacs sh -c 'apk add xclip git'
 
