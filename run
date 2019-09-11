@@ -1,10 +1,9 @@
 #!/bin/bash
+# sadly docker-compose files don't allow for proper variable substitution, so we have to use a wrapper script
 set -eux
 
 UNAME="$(id -un)" \
 GNAME="$(id -gn)" \
 EMACS_UID="$(id -u)" \
 EMACS_GID="$(id -g)" \
-docker-compose up
-
-# docker exec cloudmacs sh -c "apk add --no-cache git xclip"
+docker-compose up "$@"
