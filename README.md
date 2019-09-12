@@ -23,14 +23,31 @@ It works **really** well with spacemacs style `SPC`/`,` bindings because they fo
 1. `cp docker-compose.example.yml docker-compose.yml`
 2. Edit necessary variables in `docker-compose.yml`, presumably your want to
    * map the files you want to make accessible to container
-   * map the path to your config files/directories (e.g. `.spacemacs.d`)
+   * map the path to your config files/directories (e.g. `.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
    * change port (see 'selfhost' secion)
 3. Run the container: `./run`.
+4. Check it out in browser: 'http://localhost:8080'.
 
-4. Check it out in browser: 'http://localhost:7001**.
+# Setting up Spacemacs
+Spacemacs doesn't use `init.el`, instead you have `~/.spacemacs.d` directory, and `~/.emacs.d` serves as Spacemacs distribution.
+I **don't** recommend you to reuse `~/.emacs.d` your OS emacs distribution will generally be different from containers, 
+and who knows what else could it break. Instead just clone spacemacs in a separate dir and map it.
+
+On your Host OS:
+
+```
+git clone https://github.com/syl20bnr/spacemacs.git -b develop ~/.cloudmacs.d
+cd ~/.cloudmacs.d && git revert --no-edit 5d4b80 # get around https://github.com/syl20bnr/spacemacs/issues/11585
+```
+
+In your `docker-compose.yml`, add:
+```
+    volumes:
+      - ${HOME}/.cloudmacs.d:/home/emacs/.emacs.d
+```
 
 # Customize
-If you want to use some elisp package, e.g. `magit`, you're gonna need `git` binary in your container. There are to ways you can deal with it
+Some packages need extra binaries in the container (e.g. `magit` needs `git`). There are to ways you can deal with it
 
 1. Extend cloudmacs dockerfile and mix in the packages you need: see [example](Dockerfile.customized).
    Then you can build it, e.g.:
@@ -47,7 +64,6 @@ If you want to use some elisp package, e.g. `magit`, you're gonna need `git` bin
    docker-compose up -d
    docker exec cloudmacs sh -c "apk add --no-cache git"
    ```
-* TODO cloning emacs.d first? not sure if should just reuse .emacs.d? I guess better not to to avoid potential problems coming from different builds?
  
 # Selfhost
 * I use basic auth to access my container.

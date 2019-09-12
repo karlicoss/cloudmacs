@@ -6,4 +6,4 @@ UNAME="$(id -un)" \
 GNAME="$(id -gn)" \
 EMACS_UID="$(id -u)" \
 EMACS_GID="$(id -g)" \
-docker-compose up "$@"
+docker-compose up -d "$@"

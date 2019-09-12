@@ -18,10 +18,8 @@ services:
     volumes:
       # you might want to share your emacs/spacemacs init file, normally there should be no harm in it
       - ${HOME}/.spacemacs.d:/home/emacs/.spacemacs.d
-      # TODO document? or add git clone?
-      # TODO warn about using separete dir here
-      # TODO I guess you don't want to pack emacs.d dir inside so you can update it
-      - /L/tmp/cloudmacs/.emacs.d:/home/emacs/.emacs.d
+      # see Readme::Setting up Spacemacs for explanation
+      - ${HOME}/.cloudmacs.d:/home/emacs/.emacs.d
       # map your personal files here you want to make accessible to cloudmacs
       - ${HOME}/data:/home/emacs/data
 
