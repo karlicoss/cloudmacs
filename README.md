@@ -9,7 +9,7 @@ Since I've became hooked on emacs, I've been looking for ways to have same exper
 Sometimes you have to use non-personal computers where it's not possible/undesirable to install desktop Emacs and Dropbox/Syncthing to access your personal data. 
 So I've been looking for some cloud solution since I've got a VPS.
 
-The closest tool to what I wanted was [Filestash](https://github.com/mickael-kerjean/filestash): it suports vim/emacs bindings and some [org-mode goodines](https://www.filestash.app/2018/05/31/release-note-v0.1). However, it wasn't anywhere as convenient as emacs.
+The closest tool to what I wanted was [Filestash](https://github.com/mickael-kerjean/filestash): it suports vim/emacs bindings and some [org-mode goodiness](https://www.filestash.app/2018/05/31/release-note-v0.1). However, it wasn't anywhere as convenient as emacs.
 
 Dropbox is not capable of previewing arbitrary text files let alone edit; and even if it could you obviously wouldn't get anything close to your usual emacs workflow.
 
