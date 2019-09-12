@@ -32,7 +32,24 @@ It works **really** well with spacemacs style `SPC`/`,` bindings because they fo
 4. Check it out in browser: 'http://localhost:7001**.
 
 # Customize
- TODO Dockerfile.customized
+If you want to use some elisp package, e.g. `magit`, you're gonna need `git` binary in your container. There are to ways you can deal with it
+
+1. Extend cloudmacs dockerfile and mix in the packages you need: see [example](Dockerfile.customized).
+   Then you can build it, e.g.:
+   ```
+   docker build -f Dockerfile.customized -t customized-cloudmacs --build-arg RIPGREP_VERSION="11.0.2" .
+   ```
+   Don't forget to update `docker-compose.yml` with the name of your new container.
+
+2. Install packages directly on running container. The downside is that it's easy to lose changes if you delete the container. 
+   Unfortunately docker-compose file [doesn't support](https://github.com/docker/compose/issues/1809) post-start scripts
+   so if you want to automate this perhaps easiest would be to write a wrapper script like this:
+   ```
+   #!/bin/bash -eux
+   docker-compose up -d
+   docker exec cloudmacs sh -c "apk add --no-cache git"
+   ```
+ 
 
 # Selfhost
 * TODO cloning emacs.d first? not sure if should just reuse .emacs.d? I guess better not to to avoid potential problems coming from different builds?
