@@ -3,8 +3,8 @@ FROM karlicoss/cloudmacs:latest AS cloudmacs
 
 ###
 # these packages are necessary for my spacemacs configuration
-# TODO not sure about xclip..
-# RUN apk add --no-cache xclip git
+# TODO not sure why it wants xclip, presumably misconfigured
+RUN apk add --no-cache git xclip
 
 # TODO I think that leaves some turds
 ARG RIPGREP_VERSION="11.0.2"
