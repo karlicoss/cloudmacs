@@ -5,17 +5,15 @@ For ages I've been seeking a decent browser frontend for my org-mode notes and t
 Selfhost your Emacs with your favorite configuration.
 
 # Motivation
-Since I've became hooked on emacs (all-in TODO with org-mode, evil-mode and helm), I've been looking for ways to use it TODO.
+Since I've became hooked on emacs, I've been looking for ways to have same experience in my browser.
+Sometimes you have to use non-personal computers where it's not possible/undesirable to install desktop Emacs and Dropbox/Syncthing to access your personal data. 
+So I've been looking for some cloud solution since I've got a VPS.
 
-TODO My usecase is non-personal computers where it's undesirable to install emacs and dropbox/syncthing to sync your personal data. 
-So I've been looking for some cloud solution (I've got a VPS).
+The closest tool to what I wanted was [Filestash](https://github.com/mickael-kerjean/filestash): it suports vim/emacs bindings and some [org-mode goodines](https://www.filestash.app/2018/05/31/release-note-v0.1). However, it wasn't anywhere as convenient as emacs.
 
-Dropbox is not capable of previewing arbitrary text files (let alone), and obviously you won't get anything close to your usual emacs workflow.
+Dropbox is not capable of previewing arbitrary text files let alone edit; and even if it could you obviously wouldn't get anything close to your usual emacs workflow.
 
-Filestash TODO support vim/emacs keybindings TODO, but still rest of navigation is TODO
-
-And you could imagine that while elisp/vim style editing is fairly application agnostic (TODO point to surfingkeys?), it's a thankless job to rewrire/port all the amazing emacs packages and features 
-I'm used to: nerdtree, helm, refile, swoop, agenda, org-drill etc.
+And you could imagine that while elisp/vim style editing is fairly application [agnostic](https://github.com/brookhong/Surfingkeys#vim-editor-and-emacs-editor), it's a thankless job to rewrire/port all the amazing emacs packages and features I'm used to like neotree, helm, refile, swoop, agenda, projectile, org-drill etc.
 
 So I figured the only thing that would keep me happy is to run emacs itself over the web! Thankfully, due to its TUI interface that works surprisingly well.
 
@@ -49,29 +47,36 @@ If you want to use some elisp package, e.g. `magit`, you're gonna need `git` bin
    docker-compose up -d
    docker exec cloudmacs sh -c "apk add --no-cache git"
    ```
- 
-
-# Selfhost
 * TODO cloning emacs.d first? not sure if should just reuse .emacs.d? I guess better not to to avoid potential problems coming from different builds?
-* TODO reverse proxy -- same instuctions as for gotty
-* TODO basic auth?
-* TODO docker compose up -- how to make sure it restarts after reboot?
+ 
+# Selfhost
+* I use basic auth to access my container.
+* Set up reverse proxy to access Gotty. Steps may vary depending on your web server, but for my nginx it looks like that:
+  ```
+  location / {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $remote_addr;
+      proxy_set_header Host $host;
+      proxy_http_version 1.1;
+      proxy_pass http://localhost:8888;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+  }
+  ```
+
 
 # Potential improvements
-
-
-# TODOs
-* `post-start`
-* write about asUserEnv?
-* rg turds
 * split rg/locales/gotty in separate docker containers? maybe locales could be somehow moved to original emacs container?
 
 # Limitations
-* Phones? (use orgzly)
+* Mobile phones -- you'd struggle to use default emacs/spacemacs on touchscreens. Perhaps there is some special phone friendly config out there?
+  Anyway, I tend to use [orgzly](https://github.com/orgzly/orgzly-android) on my Android phone.
 
 # Credits
 * [dit4c/dockerfile-gotty](https://github.com/dit4c/dockerfile-gotty)
 * [JAremko/docker-emacs](https://github.com/JAremko/docker-emacs)
+* [JAremko/browsermax](https://github.com/JAremko/browsermax). It's pretty similar but Dockerfile is quite complicated, looks like they are trying to use X11 for some reason, whereas I'd be perfectly happy with `emacsclient --tty`.
+* [raincoats/nginx.gotty.proxy](https://github.com/raincoats/nginx.gotty.proxy)
 
 # License
 GPL due to the fact that I looked at other GPL licensed dockerfiles as reference.
