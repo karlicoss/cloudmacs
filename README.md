@@ -25,7 +25,7 @@ It works **really** well with spacemacs style `SPC`/`,` bindings because they fo
    * map the files you want to make accessible to container
    * map the path to your config files/directories (e.g. `.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
    * change port (see 'selfhost' secion)
-3. Run the container: `./run`.
+3. Run the container: `./compose up -d`.
 4. Check it out in browser: 'http://localhost:8080'.
 
 # Setting up Spacemacs
