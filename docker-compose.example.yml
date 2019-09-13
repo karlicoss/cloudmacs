@@ -15,6 +15,7 @@ services:
       - EMACS_UID
       - EMACS_GID
       - UHOME=/home/emacs
+      - TERM=xterm-256color # TODO move it to container instead?
     volumes:
       # you might want to share your emacs/spacemacs init file, normally there should be no harm in it
       - ${HOME}/.spacemacs.d:/home/emacs/.spacemacs.d
