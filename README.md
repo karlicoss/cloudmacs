@@ -6,7 +6,7 @@ For ages I've been seeking a decent browser frontend for my org-mode notes and t
 
 Selfhost your Emacs with your favorite configuration.
 
-![Demo screenshot](https://user-images.githubusercontent.com/291333/64793081-26ce5800-d583-11e9-9e77-cc2e3c64a4b0.png)
+![Demo screenshot](https://user-images.githubusercontent.com/291333/64866462-26e25c80-d644-11e9-9ad5-ad9d9808b0cb.png)
 
 # Motivation
 Since I've became hooked on emacs, I've been looking for ways to have same experience in my browser.
