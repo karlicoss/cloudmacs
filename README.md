@@ -27,7 +27,7 @@ It works **really** well with spacemacs style `SPC`/`,` bindings because they fo
 1. `cp docker-compose.example.yml docker-compose.yml`
 2. Edit necessary variables in `docker-compose.yml`, presumably your want to
    * map the files you want to make accessible to container
-   * map the path to your config files/directories (e.g. `.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
+   * map the path to your config files/directories (e.g. `.spacemacs`/`.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
    * change port (see 'selfhost' secion)
 3. Run the container: `./compose up -d`.
 4. Check it out in browser: 'http://localhost:8080'.

@@ -19,8 +19,11 @@ services:
     volumes:
       # you might want to share your emacs/spacemacs init file, normally there should be no harm in it
       - ${HOME}/.spacemacs.d:/home/emacs/.spacemacs.d
+      # or alternatively, if you're using .spacemacs file
+      # - ${HOME}/.spacemacs:/home/emacs/.spacemacs
       # see Readme::Setting up Spacemacs for explanation
       - ${HOME}/.cloudmacs.d:/home/emacs/.emacs.d
       # map your personal files here you want to make accessible to cloudmacs
+      # WARNING: be careful mapping more than necesarry (e.g. whole hard drives) if you're planning to expose your container to the outside world
       - ${HOME}/data:/home/emacs/data
 
