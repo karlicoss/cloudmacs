@@ -38,17 +38,23 @@ elif [[ ${u_group} != *"${UNAME}"* ]]; then
 fi
 set -e
 
-## Make sure that the user owns home directory
-if [ -d "${UHOME}" ]
-then
-	home_owner="$(stat -c '%U' ${UHOME})"
-	if ! id "${home_owner}" >/dev/null 2>&1 || [ "$(id -u ${UNAME})" -ne "$(id -u ${home_owner})" ]; then
-		chown "${EMACS_UID}":"${EMACS_GID}" -R ${UHOME}
-	fi
-else
-	mkdir -p "${UHOME}"
-	chown "${EMACS_UID}":"${EMACS_GID}" "${UHOME}"
+
+# no harm in doing it every time? should be idempotent and shouldn't mess permissions because it's special emacs home dir
+mkdir -p "${UHOME}"
+chown "${EMACS_UID}":"${EMACS_GID}" "${UHOME}"
+
+
+function check_permissions {
+    find "$UHOME" -not -user "$EMACS_UID" -or -not -group "$EMACS_GID"
+}
+
+count=$(check_permissions | wc -l)
+
+if [ "$count" -ne 0 ]; then
+   echo "WARNING: some files have wrong permissions"
+   check_permissions
 fi
+
 
 mkdir -p "${WORKSPACE}"
 chown "${EMACS_UID}":"${EMACS_GID}" "${WORKSPACE}"
