@@ -27,7 +27,7 @@ It works **really** well with spacemacs style `SPC`/`,` bindings because they fo
 1. `cp docker-compose.example.yml docker-compose.yml`
 2. Edit necessary variables in `docker-compose.yml`, presumably your want to
    * map the files you want to make accessible to container
-   * map the path to your config files/directories (e.g. `.spacemacs`/`.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
+   * map the path to your config files/directories (e.g. `.emacs.d` or `.spacemacs`/`.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
    * change port (see 'selfhost' secion)
 3. Run the container: `./compose up -d`.
 4. Check it out in browser: 'http://localhost:8080'.
@@ -53,7 +53,7 @@ In your `docker-compose.yml`, add:
 # Customize
 Some packages need extra binaries in the container (e.g. `magit` needs `git`). There are to ways you can deal with it
 
-1. Extend cloudmacs dockerfile and mix in the packages you need: see [example](Dockerfile.customized).
+1. Extend cloudmacs dockerfile and mix in the packages you need: see [my example](Dockerfile.customized), where I'm extending the container with git and ripgrep.
    Then you can build it, e.g.:
    ```
    docker build -f Dockerfile.customized -t customized-cloudmacs --build-arg RIPGREP_VERSION="11.0.2" .
@@ -87,6 +87,7 @@ Some packages need extra binaries in the container (e.g. `magit` needs `git`). T
 
 # Potential improvements
 * split rg/locales/gotty in separate docker containers? maybe locales could be somehow moved to original emacs container?
+  * also, after splitting it would be easy to make setup more generic and let people run vim/neovim, since the setup is pretty editor agnostic
 
 # Limitations
 * Mobile phones -- you'd struggle to use default emacs/spacemacs on touchscreens. Perhaps there is some special phone friendly config out there?
