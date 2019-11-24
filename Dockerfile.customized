@@ -7,11 +7,22 @@ FROM karlicoss/cloudmacs:latest AS cloudmacs
 RUN apk add --no-cache git xclip
 
 ARG RIPGREP_VERSION="11.0.2"
+# TODO is there a shorter way of doing this??
 RUN TDIR=$(mktemp -d) \
  && cd "$TDIR" \
  && wget https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERSION}/ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl.tar.gz \
  && tar xzf ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl.tar.gz \
  && mv ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl/rg /usr/local/bin \
+ && rm -rf "$TDIR"
+
+
+ARG FDFIND_VERSION="7.4.0"
+# TODO is there a shorter way of doing this??
+RUN TDIR=$(mktemp -d) \
+ && cd "$TDIR" \
+ && wget https://github.com/sharkdp/fd/releases/download/v${FDFIND_VERSION}/fd-v${FDFIND_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+ && tar xzf fd-v${FDFIND_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+ && mv fd-v${FDFIND_VERSION}-x86_64-unknown-linux-musl/fd /usr/local/bin/fdfind \
  && rm -rf "$TDIR"
 
 ###
