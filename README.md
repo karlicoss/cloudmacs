@@ -2,7 +2,7 @@
 
 [Docker hub](https://hub.docker.com/r/karlicoss/cloudmacs)
 
-For ages I've been seeking a decent browser frontend for my org-mode notes and todo lists. Until I realised that nothing prevents me from having emacs itself in my browser.
+For ages I've been seeking a decent browser frontend for my org-mode notes and todo lists. Until I realized that nothing prevents me from having emacs itself in my browser.
 
 Selfhost your Emacs with your favorite configuration.
 
@@ -13,22 +13,30 @@ Since I've became hooked on emacs, I've been looking for ways to have same exper
 Sometimes you have to use non-personal computers where it's not possible/undesirable to install desktop Emacs and Dropbox/Syncthing to access your personal data. 
 So I've been looking for some cloud solution since I've got a VPS.
 
-The closest tool to what I wanted was [Filestash](https://github.com/mickael-kerjean/filestash): it suports vim/emacs bindings and some [org-mode goodies](https://www.filestash.app/2018/05/31/release-note-v0.1). However, it wasn't anywhere as convenient as emacs.
+The closest tool to what I wanted was [Filestash](https://github.com/mickael-kerjean/filestash): it supports vim/emacs bindings and some [org-mode goodies](https://www.filestash.app/2018/05/31/release-note-v0.1). However, it wasn't anywhere as convenient as emacs.
 
 Dropbox is not capable of previewing arbitrary text files let alone edit; and even if it could you obviously wouldn't get anything close to your usual emacs workflow.
 
-And you could imagine that while elisp/vim style editing is fairly application [agnostic](https://github.com/brookhong/Surfingkeys#vim-editor-and-emacs-editor), it's a thankless job to rewrire/port all the amazing emacs packages and features I'm used to like neotree, helm, refile, swoop, agenda, projectile, org-drill etc.
+And you could imagine that while elisp/vim style editing is fairly application [agnostic](https://github.com/brookhong/Surfingkeys#vim-editor-and-emacs-editor), it's a thankless job to rewrite/port all the amazing emacs packages and features I'm used to like neotree, helm, refile, swoop, agenda, projectile, org-drill etc.
 
 So I figured the only thing that would keep me happy is to run emacs itself over the web! Thankfully, due to its TUI interface that works surprisingly well.
 
 It works **really** well with spacemacs style `SPC`/`,` bindings because they for the most part don't overlap with OS/browser hotkeys.
+
+# How does it work?
+[Dockerfile](Dockerfile) has got some comments and should be straightforward to follow, but in essence:
+
+1. [Gotty](https://github.com/yudai/gotty) is a tool that allows accessing any TTY app as a web page (also allows forwarding input)
+2. We use Gotty to run `emacsclient --tty -a ''` command, that connects to the existing Emacs instance or starts a new one. That makes the session persist tab closes, connection problems etc.
+3. Your Emacs configs and files you want to expose to Cloudmacs are mapped in `docker-compose.yml` file.
+
 
 # Try it out locally 
 1. `cp docker-compose.example.yml docker-compose.yml`
 2. Edit necessary variables in `docker-compose.yml`, presumably your want to
    * map the files you want to make accessible to container
    * map the path to your config files/directories (e.g. `.emacs.d` or `.spacemacs`/`.spacemacs.d`). Also check the 'Setting up Spacemacs' section!
-   * change port (see 'selfhost' secion)
+   * change port (see 'selfhost' section)
 3. Run the container: `./compose up -d`.
 4. Check it out in browser: 'http://localhost:8080'.
 

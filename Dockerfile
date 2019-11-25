@@ -59,4 +59,6 @@ EXPOSE 8080
 WORKDIR "${WORKSPACE}"
 
 ENTRYPOINT ["asEnvUser"]
-CMD ["gotty", "--permit-write", "--reconnect", "emacs"]
+# -a options connects to existing emacs session or starts a new one if there is no Emacs running
+# see https://www.gnu.org/software/emacs/manual/html_node/emacs/emacsclient-Options.html
+CMD ["gotty", "--permit-write", "--reconnect", "emacsclient", "--tty", "-a", ""]
