@@ -22,7 +22,7 @@ RUN apk --no-cache add git cmake make musl-dev gcc gettext-dev libintl \
 # Unfortunately, it's got fixed alpine version and missing dependency so easiest was just to copy it
 RUN apk add --no-cache go git build-base && \
   mkdir -p /tmp/gotty && \
-  GOPATH=/tmp/gotty go get github.com/yudai/gotty && \
+  GOPATH=/tmp/gotty go get github.com/sorenisanerd/gotty && \
   mv /tmp/gotty/bin/gotty /usr/local/bin/ && \
   apk del go git build-base && \
   rm -rf /tmp/gotty
@@ -61,4 +61,4 @@ WORKDIR "${WORKSPACE}"
 ENTRYPOINT ["asEnvUser"]
 # -a options connects to existing emacs session or starts a new one if there is no Emacs running
 # see https://www.gnu.org/software/emacs/manual/html_node/emacs/emacsclient-Options.html
-CMD ["gotty", "--permit-write", "--reconnect", "emacsclient", "--tty", "-a", ""]
+CMD ["gotty", "--permit-write", "--reconnect", "emacsclient", "--tty", "-a", "emacs"]
