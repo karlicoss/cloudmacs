@@ -21,11 +21,8 @@ RUN apk --no-cache add git cmake make musl-dev gcc gettext-dev libintl \
 # based on https://github.com/dit4c/dockerfile-gotty
 # Unfortunately, it's got fixed alpine version and missing dependency so easiest was just to copy it
 RUN apk add --no-cache go git build-base && \
-  mkdir -p /tmp/gotty && \
-  GOPATH=/tmp/gotty go get github.com/sorenisanerd/gotty && \
-  mv /tmp/gotty/bin/gotty /usr/local/bin/ && \
-  apk del go git build-base && \
-  rm -rf /tmp/gotty
+  go install github.com/sorenisanerd/gotty@v1.5.0 && \
+  apk del go git build-base
 # binary takes about 14 Mb
 ### 
 
